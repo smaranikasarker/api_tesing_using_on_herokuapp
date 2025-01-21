@@ -1,0 +1,202 @@
+{
+	"info": {
+		"_postman_id": "61e5f65a-6617-4ea9-97ef-8b5ae69a9325",
+		"name": "automation-01",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "36750669"
+	},
+	"item": [
+		{
+			"name": "Create Booking",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var influxdev = pm.response.json()\r",
+							"pm.environment.set(\"id\" , influxdev.bookingid)\r",
+							"\r",
+							"pm.test(\"First Name Validation\", function(){\r",
+							"pm.expect(influxdev.booking.firstname).to.eql(\"Jim\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Last Name Validation\", function(){\r",
+							"pm.expect(influxdev.booking.lastname).to.eql(\"Brown\");\r",
+							"\r",
+							"\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"firstname\" : \"Jim\",\r\n\t\"lastname\" : \"Brown\",\r\n\t\"totalprice\" : 111,\r\n\t\"depositpaid\" : true,\r\n\t\"bookingdates\" : {\r\n    \t\"checkin\" : \"2018-01-01\",\r\n    \t\"checkout\" : \"2019-01-01\"\r\n\t},\r\n\t\"additionalneeds\" : \"Breakfast\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MainUrl}}/booking",
+					"host": [
+						"{{MainUrl}}"
+					],
+					"path": [
+						"booking"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Booking Data",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var influxdev = pm.response.json()\r",
+							"\r",
+							"pm.test(\"First Name Validation\", function(){\r",
+							"pm.expect(influxdev.firstname).to.eql(\"Jim\");\r",
+							"})\r",
+							"\r",
+							"pm.test(\"Last Name Validation\", function(){\r",
+							"pm.expect(influxdev.lastname).to.eql(\"Brown\");\r",
+							"})"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{MainUrl}}/booking/{{id}}",
+					"host": [
+						"{{MainUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Access Permission",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var influxdev = pm.response.json()\r",
+							"pm.environment.set(\"token\" , influxdev.token)"
+						],
+						"type": "text/javascript",
+						"packages": {}
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"username\": \"admin\",\r\n\t\"password\": \"password123\"\r\n}\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MainUrl}}/auth",
+					"host": [
+						"{{MainUrl}}"
+					],
+					"path": [
+						"auth"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update Booking Info",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n\t\"firstname\" : \"Smaranika\",\r\n\t\"lastname\" : \"Sarker\",\r\n\t\"totalprice\" : 111,\r\n\t\"depositpaid\" : true,\r\n\t\"bookingdates\" : {\r\n    \t\"checkin\" : \"2018-01-01\",\r\n    \t\"checkout\" : \"2019-01-01\"\r\n\t},\r\n\t\"additionalneeds\" : \"Breakfast\"\r\n}\r\n\r\n",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MainUrl}}/booking/{{id}}",
+					"host": [
+						"{{MainUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Data",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Cookie",
+						"value": "token={{token}}",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{MainUrl}}/booking/{{id}}",
+					"host": [
+						"{{MainUrl}}"
+					],
+					"path": [
+						"booking",
+						"{{id}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
